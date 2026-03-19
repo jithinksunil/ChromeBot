@@ -51,8 +51,7 @@ export async function runAgentLoop(
       await delay(randomDelay());
     } catch (error) {
       state.failures += 1;
-      state.lastReason =
-        error instanceof Error ? error.message : "Unknown runtime error";
+      state.lastReason = error instanceof Error ? error.message : "Unknown runtime error";
       await logDecision({
         timestamp: new Date().toISOString(),
         title: "N/A",

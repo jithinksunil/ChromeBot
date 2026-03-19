@@ -25,17 +25,11 @@ export async function click(tabId: number, selector: string): Promise<void> {
   );
 }
 
-export async function typeText(
-  tabId: number,
-  selector: string,
-  text: string
-): Promise<void> {
+export async function typeText(tabId: number, selector: string, text: string): Promise<void> {
   await runDomAction(
     tabId,
     ({ selector: sel, text: value }) => {
-      const input = document.querySelector<
-        HTMLInputElement | HTMLTextAreaElement
-      >(sel);
+      const input = document.querySelector<HTMLInputElement | HTMLTextAreaElement>(sel);
       if (!input) return false;
       input.focus();
       input.value = value;
@@ -57,11 +51,7 @@ export async function scroll(tabId: number, y = 500): Promise<void> {
   );
 }
 
-async function runDomAction<T>(
-  tabId: number,
-  fn: (args: T) => boolean,
-  args: T
-): Promise<void> {
+async function runDomAction<T>(tabId: number, fn: (args: T) => boolean, args: T): Promise<void> {
   const [result] = await chrome.scripting.executeScript({
     target: { tabId },
     func: fn,

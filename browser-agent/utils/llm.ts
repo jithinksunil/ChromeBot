@@ -12,11 +12,7 @@ export async function decideWithLLM(
   const apiKey = instruction.openaiApiKey ?? readEnvApiKey();
 
   if (!apiKey) {
-    return mockDecision(
-      instruction,
-      job,
-      "OPENAI_API_KEY missing, using mock decision"
-    );
+    return mockDecision(instruction, job, "OPENAI_API_KEY missing, using mock decision");
   }
 
   try {
@@ -86,9 +82,7 @@ export function mockDecision(
   suffix = "keyword match"
 ): AgentDecision {
   const text = `${job.title} ${job.company} ${job.skills.join(" ")}`.toLowerCase();
-  const matches = instruction.skills.some((skill) =>
-    text.includes(skill.toLowerCase())
-  );
+  const matches = instruction.skills.some((skill) => text.includes(skill.toLowerCase()));
   return {
     decision: matches ? "APPLY" : "SKIP",
     reason: matches ? `Mock APPLY (${suffix})` : `Mock SKIP (${suffix})`
@@ -96,8 +90,7 @@ export function mockDecision(
 }
 
 function readEnvApiKey(): string | undefined {
-  const maybeProcess = (
-    globalThis as { process?: { env?: Record<string, string | undefined> } }
-  ).process;
+  const maybeProcess = (globalThis as { process?: { env?: Record<string, string | undefined> } })
+    .process;
   return maybeProcess?.env?.OPENAI_API_KEY;
 }
