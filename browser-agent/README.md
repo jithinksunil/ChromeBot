@@ -117,6 +117,21 @@ npm run build
 Then remove the old extension from `chrome://extensions` and load
 `dist/extension` again.
 
+
+### Service worker shows as "inactive" / extension has runtime errors
+
+If the extension card shows **Errors** and service worker stays inactive,
+rebuild and reload unpacked extension:
+
+```bash
+npm run build
+```
+
+Then in `chrome://extensions` click **Reload** for ChromeBot.
+
+This project now emits browser-compatible ES module imports (with `.js`
+extensions) for the background/popup scripts.
+
 ## API Key Behavior
 
 - Primary source: `OPENAI_API_KEY` environment variable.

@@ -1,5 +1,5 @@
-import { click, scroll } from "./actions";
-import { AgentDecision, JobCard } from "./state";
+import { click, scroll } from "./actions.js";
+import { AgentDecision, JobCard } from "./state.js";
 
 export async function executeDecision(
   tabId: number,

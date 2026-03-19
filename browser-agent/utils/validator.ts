@@ -1,4 +1,4 @@
-import { AgentInstruction } from "../agent/state";
+import { AgentInstruction } from "../agent/state.js";
 
 export function validateInstruction(input: AgentInstruction): string[] {
   const errors: string[] = [];

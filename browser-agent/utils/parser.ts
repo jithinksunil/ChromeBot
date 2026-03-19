@@ -1,4 +1,4 @@
-import { AgentInstruction } from "../agent/state";
+import { AgentInstruction } from "../agent/state.js";
 
 export interface PopupFormValues {
   role: string;

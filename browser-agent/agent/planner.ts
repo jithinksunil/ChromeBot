@@ -1,5 +1,5 @@
-import { decideWithLLM } from "../utils/llm";
-import { AgentDecision, AgentInstruction, JobCard } from "./state";
+import { decideWithLLM } from "../utils/llm.js";
+import { AgentDecision, AgentInstruction, JobCard } from "./state.js";
 
 export async function planDecision(
   instruction: AgentInstruction,

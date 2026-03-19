@@ -1,9 +1,9 @@
-import { MAX_DELAY_MS, MAX_FAILURES, MIN_DELAY_MS } from "../config/constants";
-import { executeDecision } from "./executor";
-import { logDecision } from "./logger";
-import { planDecision } from "./planner";
-import { AgentInstruction, AgentRuntimeState } from "./state";
-import { readJobCards } from "./domReader";
+import { MAX_DELAY_MS, MAX_FAILURES, MIN_DELAY_MS } from "../config/constants.js";
+import { executeDecision } from "./executor.js";
+import { logDecision } from "./logger.js";
+import { planDecision } from "./planner.js";
+import { AgentInstruction, AgentRuntimeState } from "./state.js";
+import { readJobCards } from "./domReader.js";
 
 export async function runAgentLoop(
   tabId: number,

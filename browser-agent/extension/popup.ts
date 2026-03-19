@@ -1,5 +1,5 @@
-import { parseInstruction } from "../utils/parser";
-import { validateInstruction } from "../utils/validator";
+import { parseInstruction } from "../utils/parser.js";
+import { validateInstruction } from "../utils/validator.js";
 
 type StartResponse = {
   ok: boolean;

@@ -1,4 +1,4 @@
-import { JobCard } from "./state";
+import { JobCard } from "./state.js";
 
 export async function readJobCards(tabId: number): Promise<JobCard[]> {
   const [result] = await chrome.scripting.executeScript({

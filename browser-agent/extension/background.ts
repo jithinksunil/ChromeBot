@@ -1,6 +1,6 @@
-import { runAgentLoop } from "../agent/agent";
-import { RUNTIME_STORAGE_KEY } from "../config/constants";
-import { AgentInstruction } from "../agent/state";
+import { runAgentLoop } from "../agent/agent.js";
+import { RUNTIME_STORAGE_KEY } from "../config/constants.js";
+import { AgentInstruction } from "../agent/state.js";
 
 let running = false;
 

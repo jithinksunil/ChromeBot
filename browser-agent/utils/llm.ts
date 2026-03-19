@@ -1,5 +1,5 @@
-import { OPENAI_MODEL } from "../config/constants";
-import { AgentDecision, AgentInstruction, JobCard } from "../agent/state";
+import { OPENAI_MODEL } from "../config/constants.js";
+import { AgentDecision, AgentInstruction, JobCard } from "../agent/state.js";
 
 type ChatResponse = {
   choices?: Array<{ message?: { content?: string } }>;
