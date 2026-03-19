@@ -103,6 +103,20 @@ and confirm these files exist:
 - `dist/extension/styles.css`
 - `dist/extension/background.js`
 
+
+### "Could not load icon icon16.png"
+
+This happens when `manifest.json` references icon files that are not
+present in the loaded folder. Current manifest no longer requires icon
+files, so rebuild and reload:
+
+```bash
+npm run build
+```
+
+Then remove the old extension from `chrome://extensions` and load
+`dist/extension` again.
+
 ## API Key Behavior
 
 - Primary source: `OPENAI_API_KEY` environment variable.
