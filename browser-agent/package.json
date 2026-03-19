@@ -1,0 +1,21 @@
+{
+  "name": "browser-agent",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Agent-first Chrome extension for autonomous job applications",
+  "scripts": {
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "lint": "eslint . --ext .ts",
+    "format": "prettier --check .",
+    "build": "tsc -p tsconfig.json",
+    "check": "npm run typecheck && npm run lint && npm run format && npm run build"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.1.28",
+    "@typescript-eslint/eslint-plugin": "^8.46.1",
+    "@typescript-eslint/parser": "^8.46.1",
+    "eslint": "^9.39.1",
+    "prettier": "^3.6.2",
+    "typescript": "^5.9.3"
+  }
+}
