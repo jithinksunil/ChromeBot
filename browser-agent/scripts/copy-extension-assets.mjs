@@ -18,7 +18,14 @@ const importRewrites = new Map([
       ["../config/", "./config/"]
     ]
   ],
-  [path.join(targetDir, "popup.js"), [["../utils/", "./utils/"]]]
+  [path.join(targetDir, "popup.js"), [["../utils/", "./utils/"]]],
+  [
+    path.join(targetDir, "content.js"),
+    [
+      ["../agent/", "./agent/"],
+      ["../config/", "./config/"]
+    ]
+  ]
 ]);
 
 await mkdir(targetDir, { recursive: true });

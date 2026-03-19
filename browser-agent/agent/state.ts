@@ -12,66 +12,79 @@ export interface AgentInstruction {
   openaiApiKey?: string;
 }
 
-export interface SearchFormContext {
-  keywordSelector?: string;
-  locationSelector?: string;
-  submitSelector?: string;
-}
+export type PageType = "home" | "job_listings" | "job_detail" | "application_form" | "unknown";
+export type SemanticElementType = "button" | "link" | "input" | "job_card" | "navigation";
+export type Importance = "high" | "medium" | "low";
+export type AgentActionType = "CLICK" | "TYPE" | "NAVIGATE" | "WAIT" | "STOP";
 
-export interface NavigationTarget {
-  label: string;
-  selector: string;
+export interface SemanticElement {
+  id: string;
+  type: SemanticElementType;
+  text: string;
+  role?: string;
   href?: string;
+  name?: string;
+  placeholder?: string;
+  selector?: string;
+  importance: Importance;
+  visible: boolean;
+  metadata?: Record<string, string | boolean | number | undefined>;
 }
 
 export interface JobCard {
   id: string;
   title: string;
   company: string;
-  experienceText: string;
   location: string;
+  experienceText?: string;
   skills: string[];
+  selector?: string;
   href?: string;
-  easyApply: boolean;
-  applySelector?: string;
-  cardSelector?: string;
-  titleSelector?: string;
+  quickApply: boolean;
 }
 
-export interface PageSnapshot {
+export interface PageObservation {
   url: string;
   title: string;
-  pageType: "listing" | "detail" | "other";
+  pageType: PageType;
+  elements: SemanticElement[];
   jobs: JobCard[];
-  applySelectors: string[];
-  closeSelectors: string[];
-  nextPageSelector?: string;
-  searchForm?: SearchFormContext;
-  navigationTargets: NavigationTarget[];
   pageText: string;
+  noResults: boolean;
 }
 
-export interface AgentDecision {
-  decision: "APPLY" | "SKIP";
+export interface AgentAction {
+  action: AgentActionType;
+  target?: string;
+  value?: string;
+  url?: string;
   reason: string;
 }
 
-export interface NavigationDecision {
-  action: "OPEN_JOBS" | "RUN_SEARCH" | "NEXT_PAGE" | "STOP";
-  reason: string;
+export interface ExecutionResult {
+  ok: boolean;
+  matchedText?: string;
+  selector?: string;
+  detail?: string;
 }
 
 export interface AgentRuntimeState {
   isRunning: boolean;
   appliedCount: number;
   failures: number;
+  iterations: number;
   lastReason?: string;
+  lastPageType?: PageType;
+  lastAction?: AgentAction;
 }
 
 export interface AgentLogEntry {
   timestamp: string;
-  title: string;
-  company: string;
-  decision: "APPLY" | "SKIP" | "ERROR";
+  pageType: PageType;
+  pageTitle: string;
+  action: AgentActionType | "ERROR";
+  target?: string;
   reason: string;
+  success: boolean;
+  detail?: string;
 }
