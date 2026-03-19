@@ -60,27 +60,48 @@ This runs:
 npm run build
 ```
 
-> Note: this repo emits TypeScript to `dist/`. For production extension
-> packaging, copy/resolve built script outputs so `extension/manifest.json`
-> points to actual generated JS files.
+This now does two things:
 
-## 6) Load Extension in Chrome
+1. Compiles TypeScript to `dist/`.
+2. Copies extension static assets (`manifest.json`, `popup.html`,
+   `styles.css`, and other non-TS files under `extension/`) into
+   `dist/extension/`.
+
+## 6) Load Extension in Chrome (important)
+
+After `npm run build`, load **`browser-agent/dist/extension`** in Chrome.
 
 1. Open `chrome://extensions`.
-2. Enable **Developer mode** (top-right).
+2. Enable **Developer mode**.
 3. Click **Load unpacked**.
-4. Select the `browser-agent/extension` folder (or your bundled output
-   folder if you wire a bundler).
+4. Select `browser-agent/dist/extension`.
 
 ## 7) Use the Agent
 
 1. Open a Naukri listings page in a tab.
 2. Click the extension icon to open popup.
-3. Fill role, locations, experience range (`2-5` style), skills, max
+3. Fill role, locations, experience range (`2-5` style), skills, and max
    applications.
 4. (Optional) Paste OpenAI key in the popup override field.
 5. Click **Start**.
 6. Click **Stop** any time to trigger kill switch.
+
+## Troubleshooting
+
+### "Manifest file is missing or unreadable"
+
+If Chrome shows this while loading `dist/extension`, run:
+
+```bash
+npm run build
+```
+
+and confirm these files exist:
+
+- `dist/extension/manifest.json`
+- `dist/extension/popup.html`
+- `dist/extension/styles.css`
+- `dist/extension/background.js`
 
 ## API Key Behavior
 
