@@ -141,9 +141,9 @@ async function navigateTowardsJobs(
   }
 
   if (navigation.action === "OPEN_JOBS") {
-    const jobsTarget = snapshot.navigationTargets.find((target) =>
-      /jobs|search/i.test(target.label)
-    );
+    const jobsTarget =
+      snapshot.navigationTargets.find((target) => /^jobs/i.test(target.label)) ??
+      snapshot.navigationTargets.find((target) => /jobs|search/i.test(target.label));
     if (jobsTarget?.href) {
       await navigateTab(tabId, jobsTarget.href);
       return true;

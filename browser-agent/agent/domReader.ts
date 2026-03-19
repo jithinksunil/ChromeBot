@@ -12,7 +12,13 @@ export async function readPageSnapshot(tabId: number): Promise<PageSnapshot> {
         "body"
       ];
 
-      const selectorCandidates = [".srp-jobtuple-wrapper", ".cust-job-tuple", "article", "section"];
+      const listingSelectorCandidates = [
+        ".srp-jobtuple-wrapper",
+        ".cust-job-tuple",
+        "[data-job-id]",
+        "[data-testid*='jobTuple']"
+      ];
+      const fallbackSelectorCandidates = ["article", "section"];
 
       function cssEscape(value: string): string {
         if ((globalThis as { CSS?: { escape?: (input: string) => string } }).CSS?.escape) {
@@ -76,9 +82,18 @@ export async function readPageSnapshot(tabId: number): Promise<PageSnapshot> {
 
       function detectJobs() {
         const seen = new Set<string>();
-        const cards = selectorCandidates.flatMap((selector) =>
-          Array.from(document.querySelectorAll<HTMLElement>(selector))
-        );
+        const urlHint = `${window.location.pathname} ${document.title}`.toLowerCase();
+        const allowFallbackCards = /jobs|job-listings|search/.test(urlHint);
+        const cards = [
+          ...listingSelectorCandidates.flatMap((selector) =>
+            Array.from(document.querySelectorAll<HTMLElement>(selector))
+          ),
+          ...(allowFallbackCards
+            ? fallbackSelectorCandidates.flatMap((selector) =>
+                Array.from(document.querySelectorAll<HTMLElement>(selector))
+              )
+            : [])
+        ];
 
         return cards
           .map((card) => {
@@ -190,19 +205,37 @@ export async function readPageSnapshot(tabId: number): Promise<PageSnapshot> {
       }
 
       function getNavigationTargets() {
-        return Array.from(document.querySelectorAll<HTMLAnchorElement>("a, button"))
-          .map((node) => {
-            const label = cleanText(node.textContent);
-            if (!label || !/jobs|search|recommended|next/i.test(label)) return undefined;
-            const selector = selectorFor(node);
-            if (!selector) return undefined;
-            return {
-              label,
-              selector,
-              href: node instanceof HTMLAnchorElement ? node.href : undefined
-            };
-          })
-          .filter(Boolean)
+        const targets: Array<{ label: string; selector: string; href?: string; priority: number }> =
+          [];
+
+        Array.from(
+          document.querySelectorAll<HTMLAnchorElement | HTMLButtonElement>("a, button")
+        ).forEach((node) => {
+          const label = cleanText(node.textContent);
+          if (!label || !/jobs|search|recommended|next/i.test(label)) return;
+
+          const selector = selectorFor(node);
+          if (!selector) return;
+
+          const priority = /^jobs/i.test(label)
+            ? 3
+            : /search/i.test(label)
+              ? 2
+              : /recommended|next/i.test(label)
+                ? 1
+                : 0;
+
+          targets.push({
+            label,
+            selector,
+            href: node instanceof HTMLAnchorElement ? node.href : undefined,
+            priority
+          });
+        });
+
+        return targets
+          .sort((left, right) => right.priority - left.priority)
+          .map(({ label, selector, href }) => ({ label, selector, href }))
           .slice(0, 20);
       }
 
@@ -211,8 +244,19 @@ export async function readPageSnapshot(tabId: number): Promise<PageSnapshot> {
         Array.from(document.querySelectorAll<HTMLElement>("a, button")).find((node) =>
           /next/i.test(cleanText(node.textContent))
         ) ?? null;
-      const isDetailPage = Boolean(getApplySelectors().length) && /job|apply/i.test(document.title);
-      const pageType = jobs.length > 0 ? "listing" : isDetailPage ? "detail" : "other";
+      const urlText = `${window.location.pathname} ${document.title}`.toLowerCase();
+      const isHomePage = /home|mnjuser|dashboard/.test(urlText);
+      const isListingPage =
+        !isHomePage &&
+        (jobs.length > 0 || /jobs|search/.test(urlText)) &&
+        Boolean(
+          document.querySelector(
+            ".srp-jobtuple-wrapper, .cust-job-tuple, [data-job-id], [data-testid*='jobTuple'], [class*='jobTuple']"
+          )
+        );
+      const isDetailPage =
+        Boolean(getApplySelectors().length) && /job|apply/.test(urlText) && !isListingPage;
+      const pageType = isListingPage ? "listing" : isDetailPage ? "detail" : "other";
 
       return {
         url: window.location.href,
