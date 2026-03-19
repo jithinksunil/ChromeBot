@@ -16,6 +16,7 @@ export type PageType = "home" | "job_listings" | "job_detail" | "application_for
 export type SemanticElementType = "button" | "link" | "input" | "job_card" | "navigation";
 export type Importance = "high" | "medium" | "low";
 export type AgentActionType = "CLICK" | "TYPE" | "NAVIGATE" | "WAIT" | "STOP";
+export type PipelineStage = "SYSTEM" | "OBSERVE" | "DECIDE" | "ACT" | "ERROR";
 
 export interface SemanticElement {
   id: string;
@@ -80,9 +81,11 @@ export interface AgentRuntimeState {
 
 export interface AgentLogEntry {
   timestamp: string;
+  iteration: number;
+  stage: PipelineStage;
   pageType: PageType;
   pageTitle: string;
-  action: AgentActionType | "ERROR";
+  action?: AgentActionType;
   target?: string;
   reason: string;
   success: boolean;
