@@ -146,3 +146,19 @@ outside the unpacked extension root.
 - This repository focuses on architecture and typed modules.
 - Real-world deployments should add secure key handling and backend
   token exchange.
+
+## Agent Behavior
+
+The agent now performs a broader observe → think → act loop:
+
+- Reads the current Naukri page to understand whether it is on a job
+  listings page, a job detail page, or a search/home page.
+- If it is not yet on listings, it will try to use visible jobs/search
+  navigation or fill the visible search form with the popup role and
+  location values.
+- On listings pages it inspects all visible job cards, opens unseen job
+  details, looks for apply/easy-apply controls, and returns to the
+  listings page after each attempt.
+- The default mock planner now biases toward role/location/skill matches
+  that also show quick-apply signals so the extension actually takes
+  actions even without an OpenAI key.
