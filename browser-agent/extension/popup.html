@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ChromeBot</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="container">
+      <h1>Job Agent</h1>
+      <form id="job-form">
+        <label>Role <input id="role" name="role" required /></label>
+        <label>Location(s) <input id="locations" name="locations" placeholder="Bangalore, Remote" required /></label>
+        <label>Experience Range (years) <input id="experienceRange" name="experienceRange" placeholder="2-5" required /></label>
+        <label>Skills <input id="skills" name="skills" placeholder="TypeScript, React, Node.js" required /></label>
+        <label>Max Applications <input id="maxApplications" name="maxApplications" type="number" min="1" max="100" value="10" required /></label>
+        <label>OpenAI API Key (optional override)
+          <input id="openaiKey" name="openaiKey" type="password" placeholder="Uses OPENAI_API_KEY if omitted" />
+        </label>
+        <div class="button-row">
+          <button id="start-btn" type="submit">Start</button>
+          <button id="stop-btn" type="button">Stop</button>
+        </div>
+      </form>
+      <pre id="status">Idle</pre>
+    </main>
+    <script type="module" src="popup.js"></script>
+  </body>
+</html>
